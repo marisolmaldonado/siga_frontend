@@ -1,0 +1,24 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <app-profile-list
+                [profilesIn]="profiles"
+                [flagProfiles]="Profiles"
+                [paginatorIn]="paginator"
+                [formProfileIn]="formProfile"
+                (profilesOut)="profiles=$event"
+                (displayOut)="profileDialog=$event"
+                (formProfileOut)="formProfile=$event"
+                (paginatorOut)="getProfiles($event)">
+        </app-profile-list>
+
+        <p-dialog [(visible)]="profileDialog" [style]="{width: '450px'}" header="Habilidades" [modal]="true"
+                  styleClass="p-fluid" (onHide)="profileDialog=false">
+            <app-profile-form
+                    [profilesIn]="profiles"
+                    [formProfileIn]="formProfile"
+                    (profilesOut)="profiles=$event"
+                    (displayOut)="profileDialog=$event">
+            </app-profile-form>
+        </p-dialog>
+    </div>
+</div>

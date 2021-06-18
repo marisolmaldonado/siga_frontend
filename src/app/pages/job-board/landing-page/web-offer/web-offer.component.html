@@ -1,0 +1,101 @@
+<hr>
+
+<div class="p-grid">
+    <div class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-3">
+        <div class="card p-shadow-2">
+            <h4>Filtrado por categorias.</h4>
+            <p-splitButton label="Filtrar" icon="pi pi-filter"
+                           (onClick)="filterForCategories()" styleClass="p-mb-2 p-mr-2"
+                           [model]="items"></p-splitButton>
+            <p-button icon="pi pi-filter-slash" label="Limpiar" styleClass="p-mb-2"
+                      (click)="cleanSelectedCategories()"></p-button>
+
+            <p-tree [value]="treeData" [virtualScroll]="true" [scrollHeight]="scrollHeight" [virtualNodeHeight]="33"
+                    selectionMode="checkbox" [(selection)]="selectedCategories" [filter]="true"></p-tree>
+        </div>
+    </div>
+    <div class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-9">
+        <div class="card p-mt-0 p-shadow-2">
+            <p-paginator [rows]="paginator.per_page"
+                         [totalRecords]="paginator.total"
+                         (onPageChange)="pageChange($event)"></p-paginator>
+            <app-offer-data-view [offers]="offers"></app-offer-data-view>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Más filtros" [(visible)]="displayModalFilter" [modal]="true"
+          [maximizable]="false" [draggable]="false" [resizable]="false">
+
+    <div *ngIf="displayMoreFilters" class="p-fluid">
+        <form [formGroup]="formMoreFilters" (submit)="filterForMore()">
+            <div class="p-formgrid">
+                <div class="p-field p-col">
+                    <h3>Cargo:</h3>
+                    <input id="position" type="text" formControlName="position" pInputText placeholder="cargo"/>
+                </div>
+            </div>
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <h3>Campo Amplio:</h3>
+                    <p-autoComplete formControlName="wideField" [suggestions]="filteredWideCategory"
+                                    [dropdown]="true" field="label"
+                                    (completeMethod)="filterWideField($event)"
+                                    (onSelect)="updateSpecificField(wideField)"
+                                    (onKeyUp)="updateSpecificField(wideField)"
+                                    placeholder="Campo amplio">
+                        <ng-template let-parentCategory pTemplate="item">
+                            <div class="country-item">
+                                <div>{{parentCategory.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+
+                </div>
+
+                <div class="p-field p-col">
+                    <h3>Campo Específico:</h3>
+                    <p-autoComplete formControlName="specificField" [suggestions]="filteredSpecificCategory"
+                                    [dropdown]="true" field="label"
+                                    (completeMethod)="filterSpecificField($event)"
+                                    (onSelect)="getSpecificField(specificField)"
+                                    (onKeyUp)="getSpecificField(specificField)"
+                                    placeholder="Campo específico">
+                        <ng-template let-specificCategory pTemplate="item">
+                            <div class="country-item">
+                                <div>{{specificCategory.label}}</div>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </div>
+            </div>
+            <app-location [option]="3" (formLocationOut)="locationOut($event)"></app-location>
+
+            <div class="p-dialog-footer">
+                <p-button type="submit" icon="pi pi-filter" label="Filtrar"
+                          class="p-button-text"></p-button>
+                <p-button icon="pi pi-times" styleClass="p-button-secondary" (click)="displayModalFilter=false"
+                          label="Cerrar"></p-button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="displayCodeFilter" class="p-fluid">
+        <form [formGroup]="formCodeFilter" (submit)="filterForCode()">
+            <div class="p-field">
+                <h3>Código:</h3>
+                <p-inputNumber mode="decimal" autocomplete="off"
+                               [useGrouping]="false" formControlName="code">
+                </p-inputNumber>
+            </div>
+
+            <div class="p-dialog-footer">
+                <p-button type="submit" icon="pi pi-filter" label="Filtrar"
+                          class="p-button-text"></p-button>
+                <p-button icon="pi pi-times" styleClass="p-button-secondary" (click)="displayModalFilter=false"
+                          label="Cerrar"></p-button>
+            </div>
+        </form>
+    </div>
+
+</p-dialog>

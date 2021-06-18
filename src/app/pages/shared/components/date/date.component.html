@@ -1,0 +1,58 @@
+<div class="p-fluid">
+    <form [formGroup]="formDate">
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <p-dropdown id="day"
+                            name="day"
+                            [options]="days"
+                            formControlName="day"
+                            placeholder="Día"
+                            (onChange)="updateValue()">
+                </p-dropdown>
+                <div *ngIf="dayField.errors && (dayField.touched || dayField.dirty)">
+                    <small *ngIf="dayField.hasError('required')"
+                           id="day-help-1" class="p-error">
+                        Obligatorio.
+                    </small>
+                </div>
+            </div>
+            <div class="p-field p-col">
+                <p-dropdown id="month"
+                            name="month"
+                            [options]="months"
+                            formControlName="month"
+                            placeholder="Mes"
+                            (onChange)="calculateTotalDays();updateValue()">
+                    <ng-template pTemplate="selectedItem">
+                        <div>{{monthField.value|months}}</div>
+                    </ng-template>
+                    <ng-template let-month pTemplate="item">
+                        <div>{{month.value|months}}</div>
+                    </ng-template>
+                </p-dropdown>
+                <div *ngIf="monthField.errors && (monthField.touched || monthField.dirty)">
+                    <small *ngIf="monthField.hasError('required')"
+                           id="month-help-1" class="p-error">
+                        Obligatorio.
+                    </small>
+                </div>
+            </div>
+            <div class="p-field p-col">
+                <p-dropdown id="year"
+                            name="year"
+                            [options]="years"
+                            formControlName="year"
+                            placeholder="Año"
+                            (onChange)="calculateTotalDays();updateValue()"
+                            [virtualScroll]="true"
+                            [itemSize]="40"></p-dropdown>
+                <div *ngIf="yearField.errors && (yearField.touched || yearField.dirty)">
+                    <small *ngIf="yearField.hasError('required')"
+                           id="year-help-1" class="p-error">
+                        Obligatorio.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

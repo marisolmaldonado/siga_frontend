@@ -1,0 +1,31 @@
+<button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-info"
+        (click)="paginatorOut.emit(paginatorIn)"></button>
+<p-paginator [rows]="paginatorIn.per_page" [totalRecords]="paginatorIn.total"
+                 (onPageChange)="pageChange($event)"></p-paginator>
+<p-card header="Datos Profesional" *ngFor="let professional of professionalsIn"
+  [style]="{width: '340px','margin-bottom': '10px','margin-left': '.7em','float':'left'}" styleClass="p-card-shadow">
+  <ng-template pTemplate="header">
+    <img alt="Card" src="https://e00-expansion.uecdn.es/assets/multimedia/imagenes/2016/12/09/14813074017844.jpg">
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <h6>Nombre:</h6> {{professional.user.full_name}}
+    </div>
+    <div class="p-field">
+      Cedula: {{professional.user.identification}}
+    </div>
+    <div class="p-field">
+      Correo: {{professional.user.personal_email}}
+    </div>
+    <div class="p-field">
+      Teléfono: {{professional.user.phone}}
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <p-button label="Información" icon="pi pi-user"></p-button>
+    <button pButton pRipple icon="pi pi-times" class="p-button-danger" [style]="{'margin-left': '.5em'}"
+    (click)="selectProfessional(professional)"></button>
+    <!-- <p-button label="Eliminar" icon="pi pi-times" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}">
+    </p-button>-->
+  </ng-template>
+</p-card>

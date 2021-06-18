@@ -1,0 +1,117 @@
+{{formExperienceIn.value|json}}
+<p-toast></p-toast>
+<div class="p-fluid">
+    <form [formGroup]="formExperienceIn" (ngSubmit)="onSubmit($event)">
+        <!-- <div class="p-field">
+            <app-location-address [option]="2" (formAddressOut)="formAddress=$event"
+                (formLocationOut)="setFormLocation($event)" id="address" name="address" formControlName="address">
+            </app-location-address>
+        </div> -->
+        <div class="p-field">
+            <label for="area">
+                <i class="p-error">*</i> Area:
+                <i *ngIf="areaField.valid" class="pi pi-check-circle icon-valid"></i>
+                <i *ngIf="areaField.invalid && (areaField.touched || areaField.dirty)"
+                    class="pi pi-times-circle icon-invalid"></i>
+            </label>
+            <p-autoComplete id="area" name="type" formControlName="area" [suggestions]="filteredAreas"
+                (completeMethod)="filterArea($event)" field="name" [dropdown]="true">
+                <ng-template let-type pTemplate="item">
+                    <div class="country-item">
+                        <div>{{<area shape="" coords="" href="" alt="">.name}}</div>
+                    </div>
+                </ng-template>
+            </p-autoComplete>
+            <div *ngIf="areaField.invalid && (areaField.touched || areaField.dirty)">
+                <small *ngIf="areaField.errors?.required" id="area-help-1" class="p-error">
+                    {{messageService.fieldRequired}}
+                </small>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="employer">Nombre Empledor:</label>
+                <input id="employer" name="employer" pInputText formControlName="employer" />
+                <div *ngIf="employerField.errors && employerField.touched">
+                    <small *ngIf="employerField.hasError('required')" id="employer-help-1" class="p-error">
+                        {{messageService.fieldRequired}}
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="position">Posición:</label>
+                <input id="position" name="position" pInputText formControlName="position" />
+                <div *ngIf="positionField.errors && positionField.touched">
+                    <small *ngIf="positionField.hasError('required')" id="position-help-1" class="p-error">
+                        {{messageService.fieldRequired}}
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="p-field">
+            <label for="startDate">Fecha de inicio</label>
+            <app-date id="startDate" name="startDate" formControlName="start_date"></app-date>
+            <div *ngIf="startDateField.errors && (startDateField.touched || startDateField.dirty)">
+                <small *ngIf="startDateField.hasError('required')" id="start-date-help-1" class="p-error">
+                    El campo es obligatorio.
+                </small>
+            </div>
+        </div>
+        <div class="p-field">
+            <label for="endDate">Fecha final</label>
+            <app-date id="endDate" name="endDate" formControlName="end_date"></app-date>
+            <div *ngIf="endDateField.errors && (endDateField.touched || endDateField.dirty)">
+                <small *ngIf="endDateField.hasError('required')" id="end-date-help-1" class="p-error">
+                    El campo es obligatorio.
+                </small>
+            </div>
+        </div>
+        <div formArrayName="activities">
+            <div>
+                <button pButton pRipple type="button" label="Añadir Activities" iconPos="right" icon="pi pi-plus"
+                    class="p-button-success p-button-raised" (click)="addActivities()">
+                </button>
+            </div>
+            <label for="activities">Actividades</label>
+            <div *ngFor="let activities of activitiesField.controls; let nameActivity = index">
+                <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-xl-11 p-lg-11 p-md-6 p-sm-12">
+                        <input pInputText id="activities" [formControlName]="nameActivity">
+                    </div>
+                    <div class="p-field p-xl-1 p-lg-1 p-md-1 p-sm-12">
+                        <button pButton pRipple type="button" icon="pi pi-trash"
+                            class="p-button-danger p-button-rounded" (click)="removeActivities(nameActivity)">
+                        </button>
+                    </div>
+                    <div *ngIf="activitiesField.errors && (activitiesField.touched || activitiesField.dirty)">
+                        <small *ngIf="activitiesField.hasError('required')" id="activities-help-1" class="p-error">
+                            {{messageService.fieldRequired}}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-field">
+            <label for="activities">
+                <i class="p-error">*</i> Está Trabajando:
+                <i *ngIf="activitiesField.valid" class="pi pi-check-circle icon-valid"></i>
+                <i *ngIf="activitiesField.invalid && (activitiesField.touched || activitiesField.dirty)"
+                    class="pi pi-times-circle icon-invalid"></i>
+            </label>
+
+            <!-- <p:selectBooleanCheckbox value="#{selectBooleanView.value1}" itemLabel="Basic"/> -->
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <button type="submit" pButton pRipple label="Guardar y Salir" icon="pi pi-save"
+                    class="p-button-success p-button-raised"></button>
+            </div>
+            <div *ngIf="!idField.value" class="p-field p-col">
+                <button type="button" pButton pRipple label="Guardar" icon="pi pi-arrow-right" class="p-button-raised"
+                    (click)="onSubmit($event,true)"></button>
+            </div>
+        </div>
+    </form>
+</div>

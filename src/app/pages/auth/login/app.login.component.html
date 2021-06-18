@@ -1,0 +1,94 @@
+<div class="card" *ngIf="flagLogin==='login'">
+    <div class="p-grid">
+        <div class="p-xl-6 p-lg-6 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-text-center">
+                <app-skeleton *ngIf="flagSkeleton" [type]="'card'"></app-skeleton>
+                <h3>{{system?.name}}</h3>
+                <h2>{{system?.acronym}}</h2>
+                <p-divider></p-divider>
+                <img src="assets/layout/images/login/login.png" alt="mirage-layout"/>
+            </div>
+        </div>
+        <div class="p-xl-2 p-lg-2 p-md-12 p-sm-12">
+            <p-divider layout="vertical"></p-divider>
+        </div>
+        <div class="p-xl-4 p-lg-4 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid" style="width: 100%;">
+                <form [formGroup]="formLogin" (ngSubmit)="onSubmitLogin()">
+                    <div class="p-field">
+                        <input pInputText id="username"
+                               formControlName="username"
+                               placeholder="Documento de Identificación"
+                               maxlength="13"/>
+                        <div *ngIf="usernameField.errors && usernameField.touched">
+                            <small *ngIf="usernameField.hasError('required')"
+                                   id="username-help-1" class="p-error">
+                                {{messageService.fieldRequired}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <p-password id="password"
+                                    formControlName="password"
+                                    placeholder="Contraseña"
+                                    [feedback]="false"
+                                    [toggleMask]="true">
+                        </p-password>
+                        <div *ngIf="passwordField.errors && passwordField.touched">
+                            <small *ngIf="passwordField.hasError('required')"
+                                   id="password-help-1" class="p-error">
+                                {{messageService.fieldRequired}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <p-checkbox id="keepSession"
+                                    formControlName="keep_session"
+                                    label="Mantener sesión activa"
+                                    [binary]="true">
+                        </p-checkbox>
+                    </div>
+                    <p-divider></p-divider>
+                    <div class="p-field">
+                        <button pButton pRipple type="submit" id="btnLogin"
+                                label="Continuar"
+                                icon="pi pi-arrow-right"></button>
+                    </div>
+                    <div class="p-field">
+                        <button pButton type="button" pRipple id="btnLoginGoogle"
+                                label="Continuar con Google"
+                                class="p-button-info"
+                                icon="pi pi-google"
+                                (click)="loginGoogle()"></button>
+                    </div>
+                    <div class="p-field">
+                        <button pButton type="button" pRipple id="btnUserLocked"
+                                label="Desbloquear Usuario"
+                                icon="pi pi-unlock"
+                                class="p-button-text p-ml-2"
+                                pTooltip="Haga click para desbloquear su usuario"
+                                [routerLink]="['/auth/user-unlocked']">
+                        </button>
+                    </div>
+                    <div class="p-field">
+                        <button pButton pRipple type="button" id="btnPasswordForgot"
+                                label="¿Olvidó su contraseña?"
+                                pTooltip="Haga click si olvidó su contraseña"
+                                class="p-button-text p-ml-2"
+                                icon="pi pi-key"
+                                [routerLink]="['/auth/password-forgot']">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Seleccionar Institutcion -->
+<app-select-role (flagLogin)="flagLogin=$event"
+                             *ngIf="flagLogin==='selectRole'"></app-select-role>
+
+<!-- Formulario cambiar contraseña -->
+<app-change-password (flagLogin)="flagLogin=$event" [passwordOld]="passwordField.value"
+                     *ngIf="flagLogin==='changePassword'"></app-change-password>

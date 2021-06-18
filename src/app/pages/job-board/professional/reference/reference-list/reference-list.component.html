@@ -1,0 +1,131 @@
+
+
+<app-skeleton *ngIf="flagReferences"></app-skeleton>
+<p-dialog [(visible)]="dialogUploadFiles" [style]="{width: '75%'}" header="Subir archivos" [modal]="true"
+          styleClass="p-fluid" (onHide)="dialogUploadFiles=false">
+    <app-upload-files (files)="upload($event,selectedReference.id)"></app-upload-files>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogViewFiles" [style]="{width: '75%'}" header="Subir Archivos" [modal]="true"
+          styleClass="p-fluid" (onHide)="dialogViewFiles=false;resetPaginator()">
+    <app-view-files
+            (files)="upload($event,selectedReference.id)"
+            [filesIn]="files"
+            (searchOut)="searchFiles($event)"
+            [paginatorIn]="paginatorFiles"
+            (paginatorOut)="getFiles($event)"></app-view-files>
+</p-dialog>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success p-button-rounded"
+                    (click)="openNewFormReference()"></button>
+            <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger p-button-rounded p-ml-2"
+                    (click)="deleteReferences()"
+                    [disabled]="!selectedReferences || !selectedReferences.length"></button>
+            <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-info p-button-rounded p-ml-2"
+                    (click)="paginatorOut.emit(paginatorIn)"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                          chooseLabel="Import" class="p-mr-2 p-mb-2 p-d-inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                    (click)="dt.exportCSV()"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-paginator [rows]="paginatorIn.per_page" [totalRecords]="paginatorIn.total"
+                 (onPageChange)="pageChange($event)"></p-paginator>
+    <p-table #dt
+             [value]="referencesIn"
+             [rows]="paginatorIn.per_page"
+             [paginator]="false"
+             [(selection)]="selectedReferences"
+             [rowHover]="true"
+             dataKey="id"
+             styleClass="p-datatable-customers"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                <h5 class="p-m-0">Referencias</h5>
+                <span class="p-input-icon-left">
+                        <i class="pi pi-search" (click)="searchReferences($event,search.value)"></i>
+                        <input #search pInputText type="text" (keyup)="searchReferences($event,$event.target.value)"
+                               placeholder="Buscar..."/>
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="professional">
+                    Profesional
+                    <p-sortIcon field="professional"></p-sortIcon>
+                </th>
+                <th pSortableColumn="institution">
+                    Institucion
+                    <p-sortIcon field="institution"></p-sortIcon>
+                </th>
+                <th pSortableColumn="position">
+                    posición 
+                    <p-sortIcon field="position"></p-sortIcon>
+                </th>
+                <th pSortableColumn="contact_name">
+                    Nombre de contacto
+                    <p-sortIcon field="contact_name"></p-sortIcon>
+                </th>
+                <th pSortableColumn="contact_phone">
+                    teléfono de contacto
+                    <p-sortIcon field="contact_phone"></p-sortIcon>
+                </th>
+                <th pSortableColumn="contact_email">
+                    Email de contacto
+                    <p-sortIcon field="contact_email"></p-sortIcon>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-reference>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="reference"></p-tableCheckbox>
+                </td>
+                <td>
+                    {{reference.professional}}
+                </td>
+                <td>
+                    {{reference.institution}}
+                </td>
+                <td>
+                    {{reference.position}}
+                </td>
+                <td>
+                    {{reference.contact_name}}
+                </td>
+                <td>
+                    {{reference.contact_phone}}
+                </td>
+                <td>
+                    {{reference.contact_email}}
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                            (click)="openEditFormReference(reference)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-ml-2"
+                            (click)="deleteReferences(reference)"></button>
+                    <button pButton pRipple icon="pi pi-paperclip" class="p-button-rounded p-ml-2"
+                            (click)="selectReference(reference);openViewFilesReference()"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                En total hay {{paginatorIn ? paginatorIn.total : 0 }} reference.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

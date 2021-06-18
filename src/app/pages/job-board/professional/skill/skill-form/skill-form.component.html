@@ -1,0 +1,68 @@
+<p-toast></p-toast>
+<p-card>
+    <div class="p-fluid">
+        <form [formGroup]="formSkillIn" (ngSubmit)="onSubmit()">
+            <div class="p-field">
+                <label for="type">
+                    <i class="p-error">*</i> Tipo:
+                    <i *ngIf="typeField.valid" class="pi pi-check-circle icon-valid"></i>
+                    <i *ngIf="typeField.invalid && (typeField.touched || typeField.dirty)"
+                       class="pi pi-times-circle icon-invalid"></i>
+                </label>
+                <p-autoComplete id="type" formControlName="type"
+                                [suggestions]="filteredTypes"
+                                (completeMethod)="filterType($event)"
+                                field="name"
+                                [dropdown]="true">
+                    <ng-template let-item pTemplate="item">
+                        <div class="country-item">
+                            <div>{{item.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-autoComplete>
+                <div *ngIf="typeField.invalid && (typeField.touched || typeField.dirty)">
+                    <small *ngIf="typeField.errors?.required"
+                           id="type-help-1" class="p-error">
+                        {{messageService.fieldRequired}}
+                    </small>
+                </div>
+            </div>
+            <div class="p-field">
+                <label for="description">
+                    <i class="p-error">*</i> Descripción:
+                    <i *ngIf="descriptionField.valid" class="pi pi-check-circle icon-valid"></i>
+                    <i *ngIf="descriptionField.invalid && (descriptionField.touched || descriptionField.dirty)"
+                       class="pi pi-times-circle icon-invalid"></i>
+                </label>
+                <textarea pInputTextarea id="description"
+                          formControlName="description"
+                          rows="5"></textarea>
+                <div *ngIf="descriptionField.errors && (descriptionField.touched || descriptionField.dirty)">
+                    <small *ngIf="descriptionField.errors?.required"
+                           id="description-help-1" class="p-error">
+                        {{messageService.fieldRequired}}
+                    </small>
+                    <small *ngIf="descriptionField.errors?.minlength"
+                           id="description-help-2" class="p-error">
+                        {{messageService.fieldMinLength(descriptionField)}}
+                    </small>
+                </div>
+            </div>
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-xl-6 p-lg-6 p-md-12 p-sm-12">
+                    <button pButton pRipple type="submit" id="btnSaveLeave"
+                            label="Guardar y Salir"
+                            class="p-button-success p-button-raised"
+                            icon="pi pi-save"></button>
+                </div>
+                <div *ngIf="!idField.value" class="p-field p-xl-6 p-lg-6 p-md-12 p-sm-12">
+                    <button pButton pRipple type="button" id="btnSave"
+                            label="Guardar"
+                            class="p-button-raised"
+                            icon="pi pi-arrow-right"
+                            (click)="onSubmit(true)"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-card>

@@ -1,0 +1,76 @@
+<p-dataView #filterBy [value]="offers" [paginator]="false" filterBy="requirements" layout="grid">
+    <ng-template pTemplate="header">
+        <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+            <span class="p-input-icon-left p-mb-2 p-mb-md-0">
+                            <i class="pi pi-search"></i>
+                            <input type="search" pInputText placeholder="Buscar"
+                                   (input)="filterBy.filter($event.target.value)">
+                        </span>
+            <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        </div>
+    </ng-template>
+    <ng-template let-offer pTemplate="listItem">
+        <div class="p-col-12">
+            <app-data-view-list-item [offer]="offer"
+                                     (idOffer)="applyOffer($event)"
+                                     (displayModalMoreInformation)="showModalMoreInformation($event)">
+            </app-data-view-list-item>
+        </div>
+    </ng-template>
+    <ng-template let-offer pTemplate="gridItem">
+        <div class="p-col-12 p-md-4">
+            <div class="offer-grid-item card">
+                <app-data-view-grid-item [offer]="offer"
+                                         (idOffer)="applyOffer($event)"
+                                         (displayModalMoreInformation)="showModalMoreInformation($event)">
+                </app-data-view-grid-item>
+            </div>
+        </div>
+    </ng-template>
+</p-dataView>
+
+
+<p-dialog *ngIf="displayModalMoreInformation" [(visible)]="displayModalMoreInformation"
+          [header]="moreInformation.position.name" [modal]="true" [style]="{width: '50vh'}"
+          [maximizable]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <div class="card">
+        <p-tabView>
+            <p-tabPanel header="Oferta" leftIcon="pi pi-briefcase" tooltip="">
+                <p><strong>Código:</strong> {{ moreInformation.code }}</p>
+                <p><strong>Nombre de contacto:</strong> {{ moreInformation.contact_name }}</p>
+                <p><strong>email de contacto:</strong> {{ moreInformation.contact_email }}</p>
+                <p><strong>Teléfono de contacto:</strong> {{ moreInformation.contact_phone }}</p>
+                <p><strong>Celular de contacto:</strong> {{ moreInformation.contact_cellphone }}</p>
+                <p><strong>Fecha de inicio:</strong> {{ moreInformation.start_date }}</p>
+                <p><strong>Actividades:</strong> {{ moreInformation.activities   }}</p>
+                <p><strong>Requerimientos:</strong> {{ moreInformation.requirements   }}</p>
+                <p><strong>Información dicional:</strong> {{ moreInformation.aditional_information  }}</p>
+                <hr>
+                <p><strong>Fecha de creación:</strong> {{ moreInformation.created_at  }}</p>
+            </p-tabPanel>
+            <p-tabPanel header="Ubicación" leftIcon="pi pi-globe" tooltip="">
+                <p><strong>Nombre:</strong> {{ moreInformation.location.name  }}</p>
+                <hr>
+                <p><strong>Región:</strong> {{ moreInformation.location.region  }}</p>
+                <hr>
+                <p><strong>Subegión:</strong> {{ moreInformation.location.subregion  }}</p>
+                <hr>
+            </p-tabPanel>
+            <p-tabPanel header="Categorías" leftIcon="pi pi-bookmark" tooltip="">
+                <div *ngFor="let category of moreInformation.categories; index as i">
+                    <p-divider align="left" type="dashed">
+                        <strong>Categoría {{ i + 1 }}</strong>
+                    </p-divider>
+                    <p>{{ category.name }}</p>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button *ngIf="displayButtonApply" icon="pi pi-check"
+                  (click)="applyOffer(moreInformation.id.toString())" label="Aplicar"
+                  class="p-button-text"></p-button>
+        <p-button icon="pi pi-times" styleClass="p-button-secondary"
+                  (click)="closeModalMoreInformation()" label="Cerrar"></p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,25 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <app-skill-list
+                [skillsIn]="skills"
+                [flagSkills]="flagSkills"
+                [paginatorIn]="paginator"
+                [formSkillIn]="formSkill"
+                (skillsOut)="skills=$event"
+                (displayOut)="skillDialog=$event"
+                (formSkillOut)="formSkill=$event"
+                (paginatorOut)="getSkills($event)">
+        </app-skill-list>
+
+        <p-dialog [(visible)]="skillDialog" [style]="{width: '450px'}" header="Habilidades" [modal]="true"
+                  styleClass="p-fluid" (onHide)="skillDialog=false">
+            <app-skill-form
+                    [skillsIn]="skills"
+                    [formSkillIn]="formSkill"
+                    (skillsOut)="skills=$event"
+                    (paginatorAdd)="paginator.total = paginator.total + $event"
+                    (displayOut)="skillDialog=$event">
+            </app-skill-form>
+        </p-dialog>
+    </div>
+</div>

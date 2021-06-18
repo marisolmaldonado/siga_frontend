@@ -1,0 +1,24 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <app-language-list
+                [languagesIn]="languages"
+                [flagLanguages]="flagLanguages"
+                [paginatorIn]="paginator"
+                [formLanguageIn]="formLanguage"
+                (languagesOut)="languages=$event"
+                (displayOut)="languageDialog=$event"
+                (formLanguageOut)="formLanguage=$event"
+                (paginatorOut)="getLanguages($event)">
+        </app-language-list>
+
+        <p-dialog [(visible)]="languageDialog" [style]="{width: '450px'}" header="Idioma" [modal]="true"
+                  styleClass="p-fluid" (onHide)="languageDialog=false">
+            <app-language-form
+                    [languagesIn]="languages"
+                    [formLanguageIn]="formLanguage"
+                    (languagesOut)="languages=$event"
+                    (displayOut)="languageDialog=$event">
+            </app-language-form>
+        </p-dialog>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<app-skeleton *ngIf="flagCategories" [type]="'rectangle'"></app-skeleton>
+
+<p-tree [hidden]="flagCategories"
+    [value]="treeNode"
+    selectionMode="checkbox"
+    [(selection)]="selectedTreeNodes"
+    (onNodeSelect)="nodeSelect($event)"
+    (onNodeUnselect)="nodeUnselect($event)"></p-tree>

@@ -1,0 +1,79 @@
+<div class="p-grid">
+
+    <div  class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-3" >
+        <div class="card p-shadow-2">
+            <h4>Filtrado por categorias.</h4>
+            <p-button icon="pi pi-filter-slash" label="Limpiar" styleClass="p-mb-2"
+                      (click)="cleanSelectedCategories()"></p-button>
+
+            <p-tree [value]="treeData" [virtualScroll]="true" [scrollHeight]="scrollHeight" [virtualNodeHeight]="33"
+                    selectionMode="checkbox" [(selection)]="selectedCategories" [filter]="true"></p-tree>
+        </div>
+    </div>
+
+    <div  class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-3"></div>
+</div>
+
+
+<div class="card">
+    <p-breadcrumb [model]="items" [home]="home"></p-breadcrumb>
+</div>
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="openNew()"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger"
+                (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+        </ng-template>
+
+    </p-toolbar>
+
+    <p-table #dt [value]="categories" [rows]="10" [paginator]="false" [globalFilterFields]="['name']"
+        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Administracion de categorías</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Search..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon>
+                </th>
+                <th>Icono</th>
+                <th pSortableColumn="code">Código <p-sortIcon field="code"></p-sortIcon>
+                </th>
+                <th pSortableColumn="parent_id">Padre<p-sortIcon field="parent_id"></p-sortIcon>
+                </th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="category"></p-tableCheckbox>
+                </td>
+                <td>{{category.name}}</td>
+                <td>Icon</td>
+                <td>{{category.code}}</td>
+                <td>{{category.parent}}</td>
+
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        (click)="editProduct(product)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="deleteProduct(product)"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+</div>

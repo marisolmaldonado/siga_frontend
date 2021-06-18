@@ -1,0 +1,90 @@
+<app-skeleton *ngIf="flagCourses" [type]="'table'"></app-skeleton>
+
+<!-- <p-dialog [(visible)]="dialogUploadFiles" [style]="{width: '75%'}" header="Subir archivos" [modal]="true"
+          styleClass="p-fluid" (onHide)="dialogUploadFiles=false">
+    <app-upload-files (files)="upload($event,selectedCourse.id)"></app-upload-files>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogViewFiles" [style]="{width: '75%'}" header="Subir Archivos" [modal]="true"
+          styleClass="p-fluid" (onHide)="dialogViewFiles=false;resetPaginator()">
+    <app-view-files
+            (files)="upload($event,selectedCourse.id)"
+            [filesIn]="files"
+            (searchOut)="searchFiles($event)"
+            [paginatorIn]="paginatorFiles"
+            (paginatorOut)="getFiles($event)"></app-view-files>
+</p-dialog> -->
+
+<div class="card" [hidden]="flagCourses">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Crear" icon="pi pi-plus" class="p-button-success p-button-rounded"
+                (click)="openNewFormCourse()"></button>
+            <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger p-button-rounded p-ml-2"
+                (click)="deleteCourses()" [disabled]="!selectedCourses || !selectedCourses.length"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-info"
+                (click)="paginatorOut.emit(paginatorIn)"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-paginator [rows]="paginatorIn.per_page" [totalRecords]="paginatorIn.total" (onPageChange)="pageChange($event)">
+    </p-paginator>
+    <p-table #dt [value]="coursesIn" [columns]="colsCourse" [paginator]="false" [(selection)]="selectedCourses"
+        [rowHover]="true" [responsive]="true" dataKey="id" styleClass="p-datatable-customers"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                <h5 class="p-m-0">Cursos y Capacitaciones</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" (click)="searchCourses($event,search.value)"></i>
+                    <input #search pInputText type="text" (keyup)="searchCourses($event,$event.target.value)"
+                        placeholder="Buscar..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="type">
+                    Tipo
+                    <p-sortIcon field="type"></p-sortIcon>
+                </th>
+                <th pSortableColumn="description">
+                    Descripción
+                    <p-sortIcon field="description"></p-sortIcon>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-course>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="course"></p-tableCheckbox>
+                </td>
+                <td>
+                    {{course.type.name}}
+                </td>
+                <td>
+                    {{course.description}}
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                        (click)="openEditFormCourse(course)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-ml-2"
+                        (click)="deleteCourses(course)"></button>
+                    <button pButton pRipple icon="pi pi-paperclip" class="p-button-rounded p-ml-2"
+                        (click)="selectCourse(course);openViewFilesCourse()"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                En total hay {{paginatorIn ? paginatorIn.total : 0 }} cursos.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

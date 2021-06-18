@@ -1,0 +1,119 @@
+<div class="card">
+    <div class="p-grid">
+        <div class="p-lg-5 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid p-text-center" style="width: 100%;">
+                <h1>Completar el registro</h1>
+                <hr>
+                <img src="assets/layout/images/login/register_socialite_user.png" alt="mirage-layout"/>
+            </div>
+        </div>
+        <div class="p-lg-2 p-md-12 p-sm-12">
+            <p-divider layout="vertical"></p-divider>
+        </div>
+        <div class="p-lg-5 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid" style="width: 100%;">
+                <form [formGroup]="formSocialiteUser" (ngSubmit)="onSubmitResetPassword($event)">
+                    <div class="p-field">
+                        <label for="email">Correo Electrónico:</label>
+                        <button pButton id="email" name="email" type="button"
+                                [label]="emailField.value"
+                                class="p-button-raised p-button-lg" iconPos="right"
+                                icon="pi pi-envelope" style="width: 100%;"></button>
+                    </div>
+                    <div class="p-formgrid p-grid">
+                        <div class="p-field p-col">
+                            <label for="firstName">Primer Nombre:</label>
+                            <input id="firstName" name="firstName" pInputText formControlName="first_name"/>
+                            <div *ngIf="firstNameField.errors && firstNameField.touched">
+                                <small *ngIf="firstNameField.hasError('required')"
+                                       id="first-name-help-1" class="p-error">
+                                    {{messageService.fieldRequired}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="p-field p-col">
+                            <label for="firstName">Segundo Nombre:</label>
+                            <input id="secondName" name="secondName" pInputText formControlName="second_name"/>
+                        </div>
+                    </div>
+                    <div class="p-formgrid p-grid">
+                        <div class="p-field p-col">
+                            <label for="firstlastname">Primer Apellido:</label>
+                            <input id="firstlastname" name="firstlastname" pInputText formControlName="first_lastname"/>
+                            <div *ngIf="firstLastnameField.errors && firstLastnameField.touched">
+                                <small *ngIf="firstLastnameField.hasError('required')"
+                                       id="first-lastname-help-1" class="p-error">
+                                    {{messageService.fieldRequired}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="p-field p-col">
+                            <label for="secondlastname">Segundo Apellido:</label>
+                            <input id="secondlastname" name="secondlastname" pInputText
+                                   formControlName="second_lastname"/>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <label for="username">Cédula o RUC:</label>
+                        <input id="username" name="username" pInputText formControlName="username" maxlength="13"/>
+                        <div *ngIf="usernameField.errors && usernameField.touched">
+                            <small *ngIf="usernameField.hasError('required')"
+                                   id="username-help-1" class="p-error">
+                                {{messageService.fieldRequired}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <label for="password">Nueva Contraseña:</label>
+                        <p-password id="password" name="password" formControlName="password"
+                                    placeholder="Escriba su nueva contraseña" [feedback]="false"
+                                    [toggleMask]="true">
+                        </p-password>
+                        <div *ngIf="passwordField.errors && passwordField.touched">
+                            <small id="password-help-1" class="p-error"
+                                   *ngIf="passwordField.hasError('required')">
+                                {{messageService.fieldRequired}}
+                            </small>
+                            <small id="password-help-2" class="p-error"
+                                   *ngIf="passwordField.hasError('minlength')">
+                                Mínimo de caracteres es {{passwordField.errors.minlength.requiredLength}}.
+                            </small>
+                        </div>
+                        <small id="password-help-3" class="p-error"
+                               *ngIf="passwordConfirmationField.dirty && !checkPasswords()">
+                            Las contraseñas no coinciden.
+                        </small>
+                    </div>
+                    <div class="p-field">
+                        <label for="passwordConfirmation">Confimar Contraseña:</label>
+                        <p-password id="passwordConfirmation" name="passwordConfirmation"
+                                    formControlName="password_confirmation" placeholder="Repita la contraseña"
+                                    [feedback]="false" [toggleMask]="true"></p-password>
+                        <div *ngIf="passwordConfirmationField.errors && passwordConfirmationField.touched">
+                            <small id="password-confirmation-help-1" class="p-error"
+                                   *ngIf="passwordConfirmationField.hasError('required')">
+                                {{messageService.fieldRequired}}
+                            </small>
+                            <small id="password-confirmation-help-2" class="p-error"
+                                   *ngIf="passwordConfirmationField.hasError('minlength')">
+                                Mínimo de caracteres es {{passwordConfirmationField.errors.minlength.requiredLength}}.
+                            </small>
+                        </div>
+                        <small id="password-confirmation-help-3" class="p-error"
+                               *ngIf="passwordConfirmationField.dirty && !checkPasswords()">
+                            Las contraseñas no coinciden.
+                        </small>
+                    </div>
+                    <div class="p-field">
+                        <button id="resetPassword" name="resetPassword" type="submit" pButton
+                                label="Continuar" class="p-button-success" icon="pi pi-arrow-right"></button>
+                    </div>
+                    <div class="p-field">
+                        <button id="login" name="login" type="button" pButton icon="pi pi-arrow-left"
+                                label="Regresar al Login" [routerLink]="['/auth/login']"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

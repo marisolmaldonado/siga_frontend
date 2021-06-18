@@ -1,0 +1,24 @@
+<div class="p-grid">
+    <div class="p-col-12">
+        <app-offer-list *ngIf="!offerDialog" 
+                        [offersIn]="offers" 
+                        [flagOffers]="flagOffers"
+                        [paginatorIn]="paginator" 
+                        [formOfferIn]="formOffer"
+                        (offersOut)="offers=$event" 
+                        (displayOut)="offerDialog=$event" 
+                        (formOfferOut)="formOffer=$event"
+                        (paginatorOut)="getOffers($event)">    
+        </app-offer-list>
+        <div *ngIf="offerDialog">
+            <button pButton label="Atras" 
+                    (click)="offerDialog=false">
+            </button>
+            <app-offer-form [offersIn]="offers" 
+                            [formOfferIn]="formOffer" 
+                            (offersOut)="offers=$event"
+                            (displayOut)="offerDialog=$event">
+            </app-offer-form>
+        </div>
+    </div>
+</div>

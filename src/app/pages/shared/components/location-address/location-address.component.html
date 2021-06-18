@@ -1,0 +1,98 @@
+<p-toast></p-toast>
+<div class="p-fluid">
+    <form [formGroup]="formAddress">
+        <app-location [option]="option" [header]="headerLocation" id="location" formControlName="infoLocationOut"
+                      (formLocationOut)="emitFormLocation($event)"></app-location>
+        <br>
+        <p-card [header]="headerAddress+':  '">
+            <div class="p-field">
+                <label><i class="p-error">*</i> Sector:
+                    <i *ngIf="sectorField.valid" class="pi pi-check-circle icon-valid"></i>
+                    <i *ngIf="sectorField.invalid && (sectorField.touched || sectorField.dirty)"
+                       class="pi pi-times-circle icon-invalid"></i>
+                </label>
+                <div class="p-formgrid p-grid">
+                    <div *ngFor="let sector of sectors">
+                        <div class="p-field p-col">
+                            <p-radioButton name="sector" [value]="sector"
+                                           [label]="sector.name"
+                                           formControlName="sector"></p-radioButton>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="sectorField.errors && (sectorField.touched || sectorField.dirty)">
+                    <small *ngIf="sectorField.hasError('required')"
+                           id="sector-help-1" class="p-error">
+                        {{messageService.fieldRequired}}
+                    </small>
+                </div>
+            </div>
+            <div class="p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <label><i class="p-error">*</i>
+                        Calle Principal:
+                        <i *ngIf="mainStreetField.valid" class="pi pi-check-circle icon-valid"></i>
+                        <i *ngIf="mainStreetField.invalid && (mainStreetField.touched || mainStreetField.dirty)"
+                           class="pi pi-times-circle icon-invalid"></i>
+                    </label>
+                    <input name="main-street" type="text" pInputText
+                           formControlName="main_street"
+                           (keypress)="updateValue()"/>
+                    <div *ngIf="mainStreetField.errors && (mainStreetField.touched || mainStreetField.dirty)">
+                        <small *ngIf="mainStreetField.hasError('required')"
+                               id="main-street-help-1" class="p-error">
+                            {{messageService.fieldRequired}}
+                        </small>
+                    </div>
+                </div>
+                <div class="p-field p-col">
+                    <label><i class="p-error">*</i> Calle Secundaria:
+                        <i *ngIf="secondaryStreet.valid" class="pi pi-check-circle icon-valid"></i>
+                        <i *ngIf="secondaryStreet.invalid && (secondaryStreet.touched || secondaryStreet.dirty)"
+                           class="pi pi-times-circle icon-invalid"></i>
+                    </label>
+                    <input name="secondary-street" type="text" pInputText formControlName="secondary_street"
+                           (keypress)="updateValue()"/>
+                    <div *ngIf="secondaryStreet.invalid && (secondaryStreet.touched || secondaryStreet.dirty)">
+                        <small *ngIf="secondaryStreet.errors?.required"
+                               id="secondary-street-help-1" class="p-error">
+                            {{messageService.fieldRequired}}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <p-fieldset legend="Detalle dirección (opcional)" [toggleable]="true" [collapsed]="true">
+                <div class="p-field">
+                    <label>Referencia:</label>
+                    <textarea name="reference" pInputTextarea formControlName="reference"
+                              (keypress)="updateValue()"></textarea>
+                </div>
+                <div class="p-field">
+                    <label># casa/departamento:</label>
+                    <input name="number" type="text" pInputText formControlName="number"
+                           (keypress)="updateValue()"/>
+                </div>
+                <div class="p-field">
+                    <label>Código Postal:</label>
+                    <div class="p-inputgroup">
+                        <input name="post-code" type="text" pInputText formControlName="post_code"
+                               (keypress)="updateValue()"/>
+                        <a type="button" pButton pRipple icon="pi pi-search" pTooltip="Consultar código postal"
+                           styleClass="p-button-danger"
+                           href="https://www.codigopostal.gob.ec/" target="_blank"></a>
+                    </div>
+                </div>
+                <div class="p-field">
+                    <label>Latitud:</label>
+                    <input name="latitude" type="text" pInputText formControlName="latitude"
+                           (keypress)="updateValue()"/>
+                </div>
+                <div class="p-field">
+                    <label>Longitud:</label>
+                    <input name="longitude" type="text" pInputText formControlName="longitude"
+                           (keypress)="updateValue()"/>
+                </div>
+            </p-fieldset>
+        </p-card>
+    </form>
+</div>

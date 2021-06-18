@@ -1,0 +1,14 @@
+<div class="p-grid">
+    <div class="p-col-12"> 
+        <app-professional-list
+                [professionalsIn]="professionals"
+                [paginatorIn]="paginator"
+                [formProfessionalIn]="formProfessional"
+                (professionalsOut)="professionals=$event"
+                (formProfessionalOut)="formProfessional=$event"       
+                (paginatorOut)="getProfesionals($event)">
+        </app-professional-list> 
+
+    </div>
+</div>
+

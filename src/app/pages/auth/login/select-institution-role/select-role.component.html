@@ -1,0 +1,54 @@
+<div class="card" *ngIf="roles?.length>1">
+    <div class="p-grid">
+        <div class="p-lg-4 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid p-text-center" style="width: 100%;">
+                <h1>
+                    Seleccione un Rol
+                </h1>
+                <p-divider></p-divider>
+                <img src="assets/layout/images/login/role.png" alt="logo"/>
+            </div>
+        </div>
+        <div class="p-lg-2 p-md-12 p-sm-12">
+            <p-divider layout="vertical"></p-divider>
+        </div>
+        <div class="p-lg-6 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid" style="width: 100%;">
+                <form [formGroup]="formRole" (ngSubmit)="onSubmitContinue()">
+                    <div class="p-field">
+                        <button pButton pRipple type="button" id="usernameDisabled"
+                                [label]="auth?.full_name"
+                                class="p-button-raised p-button-lg p-text-uppercase"
+                                iconPos="right"
+                                icon="pi pi-user">
+                        </button>
+                    </div>
+                    <div class="p-field">
+                        <label for="role">Rol:</label>
+                        <p-dropdown id="role"
+                                    formControlName="role"
+                                    [options]="roles"
+                                    placeholder="Seleccione..."
+                                    optionLabel="name"
+                                    (onChange)="getPermissions()">
+                        </p-dropdown>
+                        <div *ngIf="roleField.invalid && (roleField.touched || roleField.dirty)">
+                            <small id="role-help-1" class="p-error"
+                                   *ngIf="roleField.errors?.required">
+                                {{messageService.fieldRequired}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <button pButton pRipple type="button" id="btnToLogin"
+                                label="Regresar al Login"
+                                class="p-button-warning"
+                                icon="pi pi-arrow-left"
+                                (click)="returnLogin()">
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

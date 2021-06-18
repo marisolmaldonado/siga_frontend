@@ -1,0 +1,122 @@
+<app-skeleton *ngIf="flagLanguages"></app-skeleton>
+<p-dialog [(visible)]="dialogUploadFiles" [style]="{width: '75%'}" header="Subir archivos" [modal]="true"
+          styleClass="p-fluid" (onHide)="dialogUploadFiles=false">
+    <app-upload-files (files)="upload($event,selectedLanguage.id)"></app-upload-files>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogViewFiles" [style]="{width: '75%'}" header="Subir Archivos" [modal]="true"
+          styleClass="p-fluid" (onHide)="dialogViewFiles=false;resetPaginator()">
+    <app-view-files
+            (files)="upload($event,selectedLanguage.id)"
+            [filesIn]="files"
+            (searchOut)="searchFiles($event)"
+            [paginatorIn]="paginatorFiles"
+            (paginatorOut)="getFiles($event)"></app-view-files>
+</p-dialog>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Crear" icon="pi pi-plus" class="p-button-success p-button-rounded"
+                    (click)="openNewFormLanguage()"></button>
+            <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger p-button-rounded p-ml-2"
+                    (click)="deleteLanguages()"
+                    [disabled]="!selectedLanguages || !selectedLanguages.length"></button>
+            <button pButton pRipple label="Actualizar" icon="pi pi-refresh" class="p-button-info p-button-rounded p-ml-2"
+                    (click)="paginatorOut.emit(paginatorIn)"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import"
+                          chooseLabel="Import" class="p-mr-2 p-mb-2 p-d-inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help p-mb-2"
+                    (click)="dt.exportCSV()"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-paginator [rows]="paginatorIn.per_page" [totalRecords]="paginatorIn.total"
+                 (onPageChange)="pageChange($event)"></p-paginator>
+    <p-table #dt
+             [value]="languagesIn"
+             [rows]="paginatorIn.per_page"
+             [paginator]="false"
+             [(selection)]="selectedLanguages"
+             [rowHover]="true"
+             dataKey="id"
+             styleClass="p-datatable-customers"
+             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between table-header">
+                <h5 class="p-m-0">Idiomas</h5>
+                <span class="p-input-icon-left">
+                        <i class="pi pi-search" (click)="searchLanguages($event,search.value)"></i>
+                        <input #search pInputText type="text" (keyup)="searchLanguages($event,$event.target.value)"
+                               placeholder="Buscar..."/>
+                    </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="professional">
+                    profesional
+                    <p-sortIcon field="professional"></p-sortIcon>
+                </th>
+                <th pSortableColumn="idiom">
+                    Idioma
+                    <p-sortIcon field="idiom"></p-sortIcon>
+                </th>
+                <th pSortableColumn="written_leve">
+                    Nivel de lectura
+                    <p-sortIcon field="written_leve"></p-sortIcon>
+                </th>
+                <th pSortableColumn="spoken_level">
+                    nivel escrito
+                    <p-sortIcon field="spoken_level"></p-sortIcon>
+                </th>
+                <th pSortableColumn="read_level">
+                    Nivel de lectura
+                    <p-sortIcon field="read_level"></p-sortIcon>
+                </th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-language>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="language"></p-tableCheckbox>
+                </td>
+                <td>
+                    {{language.professional}}
+                </td>
+                <td>
+                    {{language.idiom}}
+                </td>
+                <td>
+                    {{language.written_level}}
+                </td>
+                <td>
+                    {{language.spoken_level}}
+                </td>
+                <td>
+                    {{language.read_level}}
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                            (click)="openEditFormLanguage(language)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-ml-2"
+                            (click)="deleteSLanguages(language)"></button>
+                    <button pButton pRipple icon="pi pi-paperclip" class="p-button-rounded p-ml-2"
+                            (click)="selectLanguage(language);openViewFilesLanguage()"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                En total hay {{paginatorIn ? paginatorIn.total : 0 }} idiomas.
+            </div>
+        </ng-template>
+    </p-table>
+</div>

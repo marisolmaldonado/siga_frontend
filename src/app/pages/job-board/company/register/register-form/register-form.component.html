@@ -1,0 +1,268 @@
+{{formRegisterIn.value|json}}
+<div class="p-fluid">
+  <form [formGroup]="formRegisterIn" (ngSubmit)="onSubmit()">
+    <div formGroupName="user">
+      <p-card header="Datos de Usuario">
+        <div class="p-formgrid p-grid">
+          <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+            <label for="username">
+              <i class="p-error">*</i> Nombre de Usuario:
+              <i *ngIf="usernameField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="usernameField.invalid && (usernameField.touched || usernameField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i>
+            </label>
+            <input id="username" formControlName="username" pInputText>
+            <div *ngIf="usernameField.errors && (usernameField.touched || usernameField.dirty)">
+              <small *ngIf="usernameField.hasError('required')" id="user-help-1" class="p-error">
+                El campo es obligatorio.
+              </small>
+            </div>
+          </div>
+          <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+            <label for="identification">
+              <i class="p-error">*</i> Identificación:
+              <i *ngIf="identificationField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="identificationField.invalid && (identificationField.touched || identificationField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i>
+            </label>
+            <input id="identification" formControlName="identification" pInputText>
+            <div *ngIf="identificationField.errors && (identificationField.touched || identificationField.dirty)">
+              <small *ngIf="identificationField.errors?.required" id="identification-help-1" class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+              <small *ngIf="identificationField.errors?.notAvaibleUser" id="identification-help-1" class="p-error">
+                Usuario existente
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="p-formgrid p-grid">
+          <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+            <label for="email">
+              <i class="p-error">*</i> Email:
+              <i *ngIf="emailField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="emailField.invalid && (emailField.touched || emailField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i>
+            </label>
+            <input id="email" formControlName="email" pInputText>
+            <div *ngIf="emailField.errors && (emailField.touched || emailField.dirty)">
+              <small *ngIf="emailField.errors?.required" id="email-help-1" class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
+          </div>
+          <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+            <label for="identificationType">
+              <i class="p-error">*</i> Tipo de Identificación:
+              <i *ngIf="identificationTypeField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="identificationTypeField.invalid && (identificationTypeField.touched || identificationTypeField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i> 
+            </label>
+            <p-autoComplete id="identificationType" formControlName="identificationType"
+              [suggestions]="filteredidentificationTypes" (completeMethod)="filterIdentificationType($event)" field="name"
+              [dropdown]="true">
+              <ng-template let-type pTemplate="item">
+                <div class="country-item">
+                  <div>{{type.name}}</div>
+                </div>
+              </ng-template>
+            </p-autoComplete>
+            <div
+              *ngIf="identificationTypeField.errors && (identificationTypeField.touched || identificationTypeField.dirty)">
+              <small *ngIf="identificationTypeField.errors?.required" id="identificationType-help-1" class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="p-formgrid p-grid">
+          <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+            <label for="password">
+              <i class="p-error">*</i> Contraseña:
+              <i *ngIf="passwordField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="passwordField.invalid && (passwordField.touched || passwordField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i>
+            </label>
+            <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true"></p-password>
+            <div *ngIf="passwordField.errors && (passwordField.touched || passwordField.dirty)">
+              <small *ngIf="passwordField.hasError('required')" id="password-help-1" class="p-error">
+                El campo es obligatorio.
+              </small>
+              <small *ngIf="passwordField.errors?.noPasswordMatch" id="password-help-1" class="p-error">
+                {{messageService.fieldNoPasswordMatch}}
+              </small>
+            </div>
+          </div>
+          <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+            <label for="passwordConfirmation">
+              <i class="p-error">*</i> Confirmación de Contraseña:
+              <i *ngIf="passwordConfirmationField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="passwordConfirmationField.invalid && (passwordConfirmationField.touched || passwordConfirmationField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i>
+            </label>
+            <p-password id="passwordConfirmation" formControlName="password_confirmation" [feedback]="false"
+              [toggleMask]="true">
+            </p-password>
+            <div *ngIf="passwordConfirmationField.errors && (passwordConfirmationField.touched || passwordConfirmationField.dirty)">
+              <small *ngIf="passwordConfirmationField.errors?.required" id="passwordConfirmation-help-1" class="p-error">
+               {{messageService.fieldRequired}}
+              </small>
+              <small *ngIf="passwordConfirmationField.errors?.noPasswordMatch" id="passwordConfirmation-help-1" class="p-error">
+                {{messageService.fieldNoPasswordMatch}}
+              </small>
+            </div>
+            {{formRegisterIn['controls']['user'].get("password_confirmation").errors| json}}
+          </div>
+        </div>
+        <div class="p-field">
+          <app-location-address
+           [option]="2"
+           (formAddressOut)="formAddress=$event"
+           (formLocationOut)="setFormLocation($event)"
+           id="address" name="address" formControlName="address">
+          </app-location-address>
+          <div *ngIf="addressField.errors && (addressField.touched || addressField.dirty)">
+            <small *ngIf="addressField.errors?.required" id="address-help-1" class="p-error">
+              {{messageService.fieldRequired}}
+            </small>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    <p-card header="Datos de la Compañía">
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-xl-4 p-lg-4 p-md-4 p-sm-12">
+          <label for="personType">
+            <i class="p-error">*</i> Tipo de Persona:
+            <i *ngIf="personTypeField.valid" class="pi pi-check-circle icon-valid"></i>
+            <i *ngIf="personTypeField.invalid && (personTypeField.touched || personTypeField.dirty)"
+              class="pi pi-times-circle icon-invalid"></i>
+          </label>
+          <p-autoComplete id="personType" formControlName="personType" [suggestions]="filteredpersonType"
+            (completeMethod)="filterPersonType($event)" field="name" [dropdown]="true">
+            <ng-template let-type pTemplate="item">
+              <div class="country-item">
+                <div>{{type.name}}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
+          <div *ngIf="personTypeField.errors && (personTypeField.touched || personTypeField.dirty)">
+            <small *ngIf="personTypeField.errors?.required" id="personType-help-1" class="p-error">
+              {{messageService.fieldRequired}}
+            </small>
+          </div>
+        </div>
+        <div class="p-field p-xl-4 p-lg-4 p-md-4 p-sm-12">
+          <label for="type">
+            <i class="p-error">*</i> Tipo de Compañía:
+            <i *ngIf="typeField.valid" class="pi pi-check-circle icon-valid"></i>
+            <i *ngIf="typeField.invalid && (typeField.touched || typeField.dirty)"
+              class="pi pi-times-circle icon-invalid"></i>
+          </label>
+          <p-autoComplete id="type" formControlName="type" [suggestions]="filteredTypes"
+            (completeMethod)="filterType($event)" field="name" [dropdown]="true">
+            <ng-template let-type pTemplate="item">
+              <div class="country-item">
+                <div>{{type.name}}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
+          <div *ngIf="typeField.errors && (typeField.touched || typeField.dirty)">
+            <small *ngIf="typeField.errors?.required" id="type-help-1" class="p-error">
+              {{messageService.fieldRequired}}
+            </small>
+          </div>
+        </div>
+        <div class="p-field p-xl-4 p-lg-4 p-md-4 p-sm-12">
+          <label for="activityType">
+            <i class="p-error">*</i> Tipo de Actividad:
+            <i *ngIf="activityTypeField.valid" class="pi pi-check-circle icon-valid"></i>
+            <i *ngIf="activityTypeField.invalid && (activityTypeField.touched || activityTypeField.dirty)"
+              class="pi pi-times-circle icon-invalid"></i>
+          </label>
+          <p-autoComplete id="activityType" formControlName="activityType" [suggestions]="filteredactivityType"
+            (completeMethod)="filterActivityType($event)" field="name" [dropdown]="true">
+            <ng-template let-type pTemplate="item">
+              <div class="country-item">
+                <div>{{type.name}}</div>
+              </div>
+            </ng-template>
+          </p-autoComplete>
+          <div *ngIf="activityTypeField.errors && (activityTypeField.touched || activityTypeField.dirty)">
+            <small *ngIf="activityTypeField.errors?.required" id="activityType-help-1" class="p-error">
+             {{messageService.fieldRequired}}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+          <label for="tradename">
+            <i class="p-error">*</i> Nombre Comercial:
+            <i *ngIf="tradeNameField.valid" class="pi pi-check-circle icon-valid"></i>
+            <i *ngIf="tradeNameField.invalid && (tradeNameField.touched || tradeNameField.dirty)"
+              class="pi pi-times-circle icon-invalid"></i>
+          </label>
+          <input id="tradename" formControlName="trade_name" pInputText>
+          <div *ngIf="tradeNameField.errors && (tradeNameField.touched || tradeNameField.dirty)">
+            <small *ngIf="tradeNameField.errors?.required" id="tradename-help-1" class="p-error">
+              {{messageService.fieldRequired}}
+            </small>
+          </div>
+        </div>
+        <div class="p-field p-xl-6 p-lg-6 p-md-6 p-sm-12">
+          <label for="web">
+            <i class="p-error">*</i> Web:
+            <i *ngIf="webField.valid" class="pi pi-check-circle icon-valid"></i>
+            <i *ngIf="webField.invalid && (webField.touched || webField.dirty)"
+              class="pi pi-times-circle icon-invalid"></i>
+          </label>
+          <input id="web" formControlName="web" pInputText>
+          <div *ngIf="webField.errors && (webField.touched || webField.dirty)">
+            <small *ngIf="webField.errors?.required" id="web-help-1" class="p-error">
+             {{messageService.fieldRequired}}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-xl-1 p-lg-1 p-md-1 p-sm-12">
+          <label for="comercialActivities">
+            <i class="p-error">*</i> Actividades Comerciales:
+              <i *ngIf="comercialActivitiesField.valid" class="pi pi-check-circle icon-valid"></i>
+              <i *ngIf="comercialActivitiesField.invalid && (comercialActivitiesField.touched || comercialActivitiesField.dirty)"
+                class="pi pi-times-circle icon-invalid"></i>
+          </label>
+        </div>
+        <div class="p-field p-xl-2 p-lg-2 p-md-2 p-sm-12">
+          <button pButton pRipple type="button" (click)="addComercialActivity()" iconPos="right" icon="pi pi-plus"
+            class="p-button-success p-button-raised" label="Añadir"></button>
+        </div>
+      </div>
+      <div formArrayName="comercial_activities">
+        <div *ngFor="let comercial_activity of comercialActivitiesField.controls; let i = index;">
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-xl-11 p-lg-11 p-md-6 p-sm-12">
+              <input id="comercialActivities" [formControlName]="i" pInputText>
+            </div>
+            <div class="p-field p-xl-1 p-lg-1 p-md-1 p-sm-12">
+              <button pButton pRipple type="button" (click)="removeComercialActivity(i)" iconPos="right"
+                icon="pi pi-trash" class="p-button-danger p-button-rounded"></button>
+            </div>
+            <div
+              *ngIf="comercialActivitiesField.errors && (comercialActivitiesField.touched || comercialActivitiesField.dirty)">
+              <small *ngIf="comercialActivitiesField.errors?.required" id="comercialActivities-help-1"
+                class="p-error">
+                {{messageService.fieldRequired}}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+      <div class="p-field p-xl-2 p-lg-2 p-md-2 p-sm-12">
+        <button type="submit" pButton pRipple label="Guardar y Salir" icon="pi pi-save"
+          class="p-button-success p-button-raised"></button>
+      </div>
+  </form>
+</div>

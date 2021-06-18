@@ -1,0 +1,153 @@
+ {{formCourseIn.value|json}}
+ <p-toast></p-toast>
+ <div class="p-fluid">
+     <form [formGroup]="formCourseIn" (ngSubmit)="onSubmit($event)">
+         <div class="p-formgrid p-grid">
+             <div class="p-field p-col">
+                 <label for="name">Nombre:</label>
+                 <input id="name" name="name" pInputText formControlName="name" />
+                 <div *ngIf="nameField.errors && nameField.touched">
+                     <small *ngIf="nameField.hasError('required')" id="name-help-1" class="p-error">
+                         {{messageService.fieldRequired}}
+                     </small>
+                 </div>
+             </div>
+         </div>
+         <div class="p-formgrid p-grid">
+             <div class="p-field p-col">
+                 <label for="area">Área:</label>
+                 <input id="area" name="area" pInputText formControlname="area" />
+                 <div *ngIf="areaField.errors && areaField.touched">
+                     <small *ngIf="areaField.hasError('required')" id="area-help-1" class="p-error">
+                         {{messageService.fieldRequired}}
+                     </small>
+                 </div>
+             </div>
+         </div>
+         <div class="p-field">
+             <label for="description">
+                 <i class="p-error">*</i> Descripción:
+                 <i *ngIf="descriptionField.valid" class="pi pi-check-circle icon-valid"></i>
+                 <i *ngIf="descriptionField.invalid && (descriptionField.touched || descriptionField.dirty)"
+                     class="pi pi-times-circle icon-invalid"></i>
+             </label>
+             <textarea pInputTextarea id="description" name="type" formControlName="description" rows="5"></textarea>
+             <div *ngIf="descriptionField.errors && (descriptionField.touched || descriptionField.dirty)">
+                 <small *ngIf="descriptionField.hasError('required')" id="description-help-1" class="p-error">
+                     {{messageService.fieldRequired}}
+                 </small>
+                 <small *ngIf="descriptionField.hasError('minlength')" id="description-help-2" class="p-error">
+                     Mínimo de caracteres es {{descriptionField.errors.minlength.requiredLength}}.
+                 </small>
+             </div>
+         </div>
+         <div class="p-field">
+             <label for="type">
+                 <i class="p-error">*</i> Tipo:
+                 <i *ngIf="typeField.valid" class="pi pi-check-circle icon-valid"></i>
+                 <i *ngIf="typeField.invalid && (typeField.touched || typeField.dirty)"
+                     class="pi pi-times-circle icon-invalid"></i>
+             </label>
+             <p-autoComplete id="type" name="type" formControlName="type" [suggestions]="filteredTypes"
+                 (completeMethod)="filterType($event)" field="name" [dropdown]="true">
+                 <ng-template let-type pTemplate="item">
+                     <div class="country-item">
+                         <div>{{type.name}}</div>
+                     </div>
+                 </ng-template>
+             </p-autoComplete>
+             <div *ngIf="typeField.invalid && (typeField.touched || typeField.dirty)">
+                 <small *ngIf="typeField.errors?.required" id="type-help-1" class="p-error">
+                     {{messageService.fieldRequired}}
+                 </small>
+             </div>
+         </div>
+         <div class="p-field">
+             <label for="institution">
+                 <i class="p-error">*</i> Institución:
+                 <i *ngIf="institutionField.valid" class="pi pi-check-circle icon-valid"></i>
+                 <i *ngIf="institutionField.invalid && (institutionField.touched || institutionField.dirty)"
+                     class="pi pi-times-circle icon-invalid"></i>
+             </label>
+             <p-autoComplete id="institution" name="institution" formControlName="institution"
+                 [suggestions]="filteredInstitutions" (completeMethod)="filterInstitution($event)" field="name"
+                 [dropdown]="true">
+                 <ng-template let-institution pTemplate="item">
+                     <div class="country-item">
+                         <div>{{institution.name}}</div>
+                     </div>
+                 </ng-template>
+             </p-autoComplete>
+             <div *ngIf="institutionField.invalid && (institutionField.touched || institutionField.dirty)">
+                 <small *ngIf="institutionField.errors?.required" id="institution-help-1" class="p-error">
+                     {{messageService.fieldRequired}}
+                 </small>
+             </div>
+         </div>
+         <div class="p-field">
+             <label for="certificationType">
+                 <i class="p-error">*</i> Tipo de Certificación:
+                 <i *ngIf="certificationTypeField.valid" class="pi pi-check-circle icon-valid"></i>
+                 <i *ngIf="certificationTypeField.invalid && (certificationTypeField.touched || certificationTypeField.dirty)"
+                     class="pi pi-times-circle icon-invalid"></i>
+             </label>
+             <p-autoComplete id="certification_type" name="certificationType" formControlName="certification_type"
+                 [suggestions]="filteredCertificationTypes" (completeMethod)="filterType($event)" field="name"
+                 [dropdown]="true">
+                 <ng-template let-certificationType pTemplate="item">
+                     <div class="country-item">
+                         <div>{{certificationType.name}}</div>
+                     </div>
+                 </ng-template>
+             </p-autoComplete>
+             <div
+                 *ngIf="certificationTypeField.invalid && (certificationTypeField.touched || certificationTypeField.dirty)">
+                 <small *ngIf="certificationTypeField.errors?.required" id="certification-type-help-1" class="p-error">
+                     {{messageService.fieldRequired}}
+                 </small>
+             </div>
+         </div>
+         <div class="p-field">
+             <label for="startDate">Fecha de inicio</label>
+             <app-date id="startDate" name="startDate" formControlName="start_date"></app-date>
+             <div *ngIf="startDateField.errors && (startDateField.touched || startDateField.dirty)">
+                 <small *ngIf="startDateField.hasError('required')" id="start-date-help-1" class="p-error">
+                     El campo es obligatorio.
+                 </small>
+             </div>
+         </div>
+         <div class="p-field">
+             <label for="endDate">Fecha final</label>
+             <app-date id="endDate" name="endDate" formControlName="end_date"></app-date>
+             <div *ngIf="endDateField.errors && (endDateField.touched || endDateField.dirty)">
+                 <small *ngIf="endDateField.hasError('required')" id="end-date-help-1" class="p-error">
+                     El campo es obligatorio.
+                 </small>
+             </div>
+         </div>
+         <!-- <div class="p-field">
+             <label for="hours">
+                 <i class="p-error">*</i> Horas:
+                 <i *ngIf="hoursField.valid" class="pi pi-check-circle icon-valid"></i>
+                 <i *ngIf="hoursField.invalid && (hoursField.touched || hoursField.dirty)"
+                     class="pi pi-times-circle icon-invalid"></i>
+             </label>
+             <input pInputText type="text" pKeyFilter="int">
+             <div *ngIf="hoursField.invalid && (hoursField.touched || hoursField.dirty)">
+                 <small *ngIf="hoursField.errors?.required" id="hour-help-1" class="p-error">
+                     {{messageService.fieldRequired}}
+                 </small>
+             </div>
+         </div> -->
+         <div class="p-formgrid p-grid">
+             <div class="p-field p-col">
+                 <button type="submit" pButton pRipple label="Guardar y Salir" icon="pi pi-save"
+                     class="p-button-success p-button-raised"></button>
+             </div>
+             <div *ngIf="!idField.value" class="p-field p-col">
+                 <button type="button" pButton pRipple label="Guardar" icon="pi pi-arrow-right" class="p-button-raised"
+                     (click)="onSubmit($event,true)"></button>
+             </div>
+         </div>
+     </form>
+ </div>

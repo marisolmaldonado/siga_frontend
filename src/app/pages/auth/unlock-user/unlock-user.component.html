@@ -1,0 +1,73 @@
+<div class="card">
+    <div class="p-grid">
+        <div class="p-lg-5 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid p-text-center" style="width: 100%;">
+                <h1>Desbloquear Usuario</h1>
+                <p-divider></p-divider>
+                <img src="assets/layout/images/login/unlock.png" alt="mirage-layout"/>
+            </div>
+        </div>
+        <div class="p-lg-2 p-md-12 p-sm-12">
+            <p-divider layout="vertical"></p-divider>
+        </div>
+        <div class="p-lg-5 p-md-12 p-sm-12 p-d-flex p-ai-center p-jc-center">
+            <div class="p-fluid" style="width: 100%;">
+                <form [formGroup]="formPasswordReset" (ngSubmit)="onSubmitResetPassword()">
+                    <div class="p-field">
+                        <label for="username">Usuario:</label>
+                        <button pButton pRipple type="button" id="username"
+                                [label]="usernameField.value"
+                                class="p-button-secondary p-button-raised p-button-lg" iconPos="right"
+                                icon="pi pi-user" style="width: 100%;"></button>
+                    </div>
+                    <div class="p-field">
+                        <label for="password">Nueva Contraseña:</label>
+                        <p-password id="password"
+                                    formControlName="password"
+                                    [feedback]="false"
+                                    [toggleMask]="true">
+                        </p-password>
+                        <div *ngIf="passwordField.invalid && (passwordField.touched || passwordField.dirty)">
+                            <small id="password-help-1" class="p-error"
+                                   *ngIf="passwordField.errors?.required">
+                                {{messageService.fieldRequired}}
+                            </small>
+                            <small id="password-help-2" class="p-error"
+                                   *ngIf="passwordField.errors?.minlength">
+                                {{messageService.fieldMinLength(passwordField)}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <label for="passwordConfirmation">Repita la contraseña:</label>
+                        <p-password id="passwordConfirmation"
+                                    formControlName="password_confirmation"
+                                    [feedback]="false" [toggleMask]="true"></p-password>
+                        <div *ngIf="passwordConfirmationField.invalid && (passwordConfirmationField.touched || passwordConfirmationField.dirty)">
+                            <small id="password-confirmation-help-1" class="p-error"
+                                   *ngIf="passwordConfirmationField.errors?.required">
+                                {{messageService.fieldRequired}}
+                            </small>
+                            <small id="password-confirmation-help-2" class="p-error"
+                                   *ngIf="passwordConfirmationField.errors?.noPasswordMatch">
+                                {{messageService.fieldNoPasswordMatch}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="p-field">
+                        <button pButton pRipple type="submit" id="btnResetPassword"
+                                label="Desbloquear"
+                                icon="pi pi-unlock"></button>
+                    </div>
+                    <div class="p-field">
+                        <button pButton pRipple type="button" id="btnToLogin"
+                                label="Regresar al Login"
+                                class="p-button-warning"
+                                icon="pi pi-arrow-left"
+                                [routerLink]="['/auth/login']"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

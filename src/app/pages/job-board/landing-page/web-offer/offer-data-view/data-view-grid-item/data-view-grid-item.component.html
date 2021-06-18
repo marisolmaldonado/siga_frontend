@@ -1,0 +1,22 @@
+<div class="offer-grid-item-top">
+    <div>
+        <i class="pi pi-globe offer-category-icon"></i>
+        <span class="offer-category">{{ offer.location.region }}, {{ offer.location.subregion }}</span>
+    </div>
+    <div>
+        <i class="pi pi-users offer-category-icon"></i>
+        <span [class]="'offer-badge'">{{ offer.vacancies }} vacantes</span>
+    </div>
+</div>
+<div class="offer-grid-item-content p-mt-2">
+    <div class="offer-name">{{ offer.position.name }}</div>
+    <div class="offer-description">{{ offer.requirements }}</div>
+</div>
+<div class="offer-grid-item-bottom">
+    <p-button *ngIf="displayButtonApply" label="Aplicar" icon="pi pi-check" styleClass="p-col-12"
+              (click)="sendIdOffer(offer.id);"></p-button>
+    <p-button *ngIf="!displayButtonApply" icon="pi pi-info-circle" label="Aplicar" styleClass="p-col-12"
+              (click)="redirectToLogin();" [style]="{'width': '100%'}"></p-button>
+    <p-button label="Ver más" icon="pi pi-eye" (click)="moreInformation(offer)"
+              styleClass="p-button-secondary p-col-12"></p-button>
+</div>
